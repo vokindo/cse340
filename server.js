@@ -10,7 +10,6 @@ const express = require("express");
 const path = require("path");
 const env = require("dotenv").config();
 const app = express();
-const staticRoutes = require("./routes/static"); // Import static.js routes
 
 /* ***********************
  * Set View Engine and Static Files
@@ -19,10 +18,17 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views")); // Set views directory
 
 /* ***********************
+ * Static File Configuration
+ *************************/
+// Static file routes (CSS, JS, images)
+app.use(express.static("public")); // Serve static files from the public directory
+app.use("/css", express.static(path.join(__dirname, "public", "css")));
+app.use("/js", express.static(path.join(__dirname, "public", "js")));
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
+
+/* ***********************
  * Routes
  *************************/
-app.use(staticRoutes(app)); // Pass app to static.js for configuration
-
 // Index route
 app.get("/", function (req, res) {
   res.render("index", { title: "Home" });

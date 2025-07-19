@@ -1,16 +1,14 @@
 const express = require('express');
-const expressLayouts = require('express-ejs-layouts'); // Assuming you have express-ejs-layouts
 const router = express.Router();
 
-// Set up view engine and layout
-module.exports = function(app) {
-  app.set("view engine", "ejs"); // Set EJS as view engine
-  app.use(expressLayouts); // Use express-ejs-layouts
-  app.set("layout", "./layouts/layout"); // Set the layout path for EJS layouts
+// Static file routes for CSS, JS, and images
+router.use(express.static("public")); // Serve all static files from the "public" folder
+router.use("/css", express.static(__dirname + "/public/css"));
+router.use("/js", express.static(__dirname + "/public/js"));
+router.use("/images", express.static(__dirname + "/public/images"));
 
-  // Set up static file serving for the public folder
-  app.use(express.static("public")); // Serve static files from public directory
-  app.use("/css", express.static(__dirname + "/public/css"));
-  app.use("/js", express.static(__dirname + "/public/js"));
-  app.use("/images", express.static(__dirname + "/public/images"));
-};
+// You can add more custom routes here if needed for handling specific routes
+// Example: router.get('/some-custom-route', (req, res) => { res.send('Some response'); });
+
+// Export the router to be used in server.js
+module.exports = router;
