@@ -47,3 +47,9 @@ const host = process.env.HOST || "localhost";
 app.listen(port, () => {
   console.log(`App listening on ${host}:${port}`);
 });
+
+
+
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts); // Use express-ejs-layouts
+app.set("layout", "./layouts/layout"); // Set the layout file path
