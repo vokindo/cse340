@@ -10,6 +10,9 @@ const express = require("express");
 const path = require("path");
 const env = require("dotenv").config();
 const app = express();
+const inventoryRoute = require("./routes/inventoryRoute");
+app.use("/inventory", inventoryRoute);
+
 
 /* ***********************
  * Set View Engine and Static Files
