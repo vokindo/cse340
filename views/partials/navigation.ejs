@@ -1,3 +1,8 @@
 <nav>
-  <%- nav %>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <% if (nav) { %>
+      <%- nav %>
+    <% } %>
+  </ul>
 </nav>

@@ -22,22 +22,22 @@ module.exports = {
 };
 
 
-const pool = require("../database/");
+const pool = require("../database/"); // adjust if needed
 
 async function getNav() {
   try {
-    const data = await pool.query("SELECT classification_id, classification_name FROM classification ORDER BY classification_name");
-    let nav = `<ul>`;
-    nav += `<li><a href="/" title="Home page">Home</a></li>`;
+    const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
+    let nav = "";
     data.rows.forEach(row => {
-      nav += `<li><a href="/inventory/type/${row.classification_id}" title="See our ${row.classification_name} inventory">${row.classification_name}</a></li>`;
+      nav += `<li><a href="/inventory/type/${row.classification_id}">${row.classification_name}</a></li>`;
     });
-    nav += `</ul>`;
     return nav;
-  } catch (error) {
-    throw new Error("Failed to build navigation.");
+  } catch (err) {
+    console.error("getNav error:", err);
+    return "<li><a href='/'>Home</a></li>"; // fallback
   }
 }
+
 
 
 module.exports = { getNav };
