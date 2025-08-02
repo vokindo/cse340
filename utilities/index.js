@@ -22,25 +22,30 @@ module.exports = {
 };
 
 
-const pool = require("../database/"); // adjust if needed
+const pool = require("../database");
 
 async function getNav() {
   try {
-    const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
-    let nav = "";
+    const data = await pool.query("SELECT * FROM classification ORDER BY classification_name");
+    let nav = `<li><a href="/">Home</a></li>`; // Only one "Home" link
     data.rows.forEach(row => {
       nav += `<li><a href="/inventory/type/${row.classification_id}">${row.classification_name}</a></li>`;
     });
     return nav;
   } catch (err) {
-    console.error("getNav error:", err);
-    return "<li><a href='/'>Home</a></li>"; // fallback
+    console.error("Error building navigation:", err);
+    return `<li><a href="/">Home</a></li>`; // fallback
   }
 }
 
 
 
-module.exports = { getNav };
+
+module.exports = {
+  getNav,
+  // ... any other functions
+};
+
 
 function buildDetailView(vehicle) {
   const formatter = new Intl.NumberFormat("en-US");
