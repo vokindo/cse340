@@ -1,52 +1,66 @@
 /* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
+ * Primary server file
+ ******************************************/
 
-/* ***********************
- * Require Statements
- *************************/
 const express = require("express");
 const path = require("path");
-const env = require("dotenv").config();
+require("dotenv").config();
+
 const app = express();
-const expressLayouts = require("express-ejs-layouts");
+
+// Routes
 const inventoryRoute = require("./routes/inventoryRoute");
+
+// Utilities
 const utilities = require("./utilities");
 
-/* Set View Engine */
+// Middleware to inject navigation into all views
+app.use(async (req, res, next) => {
+  try {
+    res.locals.nav = await utilities.getNav();
+    next();
+  } catch (error) {
+    console.error("Error loading navigation:", error);
+    res.locals.nav = ""; // fallback to empty nav
+    next();
+  }
+});
+
+/* ***********************
+ * View Engine & Layout
+ *************************/
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-/* Layout Support */
+const expressLayouts = require("express-ejs-layouts");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
-/* Static Files */
+/* ***********************
+ * Static Files
+ *************************/
 app.use(express.static("public"));
 app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/js", express.static(path.join(__dirname, "public", "js")));
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
-/* Routes */
+/* ***********************
+ * Routes
+ *************************/
 app.use("/inventory", inventoryRoute);
 
-// Home Page Route with nav
-app.get("/", async function (req, res, next) {
-  try {
-    const nav = await utilities.getNav();
-    res.render("index", {
-      title: "Home",
-      nav,
-    });
-  } catch (err) {
-    next(err);
-  }
+app.get("/", (req, res) => {
+  res.render("index", {
+    title: "Home"
+  });
 });
 
-/* Server Startup */
+/* ***********************
+ * Server Listener
+ *************************/
 const port = process.env.PORT || 5500;
 const host = process.env.HOST || "localhost";
+
 app.listen(port, () => {
   console.log(`App listening on ${host}:${port}`);
 });
