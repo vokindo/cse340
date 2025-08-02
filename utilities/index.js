@@ -24,19 +24,41 @@ module.exports = {
 
 const pool = require("../database");
 
+//async function getNav() {
+  //try {
+    //const data = await pool.query("SELECT * FROM classification ORDER BY classification_name");
+    //let nav = `<li><a href="/">Home</a></li>`; // Only one "Home" link
+   // data.rows.forEach(row => {
+    //  nav += `<li><a href="/inventory/type/${row.classification_id}">${row.classification_name}</a></li>`;
+   // });
+   // return nav;
+  //} catch (err) {
+   // console.error("Error building navigation:", err);
+   // return `<li><a href="/">Home</a></li>`; // fallback
+  //}
+//}
+
 async function getNav() {
   try {
-    const data = await pool.query("SELECT * FROM classification ORDER BY classification_name");
-    let nav = `<li><a href="/">Home</a></li>`; // Only one "Home" link
-    data.rows.forEach(row => {
-      nav += `<li><a href="/inventory/type/${row.classification_id}">${row.classification_name}</a></li>`;
-    });
-    return nav;
-  } catch (err) {
-    console.error("Error building navigation:", err);
-    return `<li><a href="/">Home</a></li>`; // fallback
+    const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
+    console.log("NAV DATA:", data.rows); // Add this
+    return buildNav(data.rows);
+  } catch (error) {
+    console.error("getNav error:", error);
+    throw error;
   }
 }
+
+function buildNav(classificationList) {
+  let nav = '<ul>';
+  nav += '<li><a href="/" title="Home page">Home</a></li>';
+  classificationList.forEach((row) => {
+    nav += `<li><a href="/inventory/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">${row.classification_name}</a></li>`;
+  });
+  nav += '</ul>';
+  return nav;
+}
+
 
 
 
