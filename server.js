@@ -8,33 +8,20 @@ require("dotenv").config();
 
 const app = express();
 
-// Routes
-const inventoryRoute = require("./routes/inventoryRoute");
-
-// Utilities
+// Load utilities
 const utilities = require("./utilities");
 
-// Middleware to inject navigation into all views
-app.use(async (req, res, next) => {
-  try {
-    res.locals.nav = await utilities.getNav();
-    next();
-  } catch (error) {
-    console.error("Error loading navigation:", error);
-    res.locals.nav = ""; // fallback to empty nav
-    next();
-  }
-});
+// Load routes
+const inventoryRoute = require("./routes/inventoryRoute");
 
 /* ***********************
  * View Engine & Layout
  *************************/
+const expressLayouts = require("express-ejs-layouts");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-const expressLayouts = require("express-ejs-layouts");
 app.use(expressLayouts);
-app.set("layout", "./layouts/layout");
+app.set("layout", "layouts/layout"); // This points to views/layouts/layout.ejs
 
 /* ***********************
  * Static Files
@@ -45,14 +32,26 @@ app.use("/js", express.static(path.join(__dirname, "public", "js")));
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 /* ***********************
+ * Middleware
+ *************************/
+// Inject navigation into all views
+app.use(async (req, res, next) => {
+  try {
+    res.locals.nav = await utilities.getNav();
+  } catch (err) {
+    console.error("Failed to load navigation:", err);
+    res.locals.nav = "";
+  }
+  next();
+});
+
+/* ***********************
  * Routes
  *************************/
 app.use("/inventory", inventoryRoute);
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    title: "Home"
-  });
+  res.render("index", { title: "Home" });
 });
 
 /* ***********************

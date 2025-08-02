@@ -1,41 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <%- include("partials/head") %>
-</head>
-<body>
-    <%- include("partials/navigation", { nav: nav }) %>
+<section class="intro">
+    <h1>Welcome to CSE Motors</h1>
+    <p>Your one-stop shop for high-quality cars. Explore our latest vehicles below:</p>
+</section>
 
-    <main>
-        <section class="intro">
-            <h1>Welcome to CSE Motors</h1>
-            <p>Your one-stop shop for high-quality cars. Explore our latest vehicles below:</p>
-        </section>
+<section class="car-gallery">
+    <div class="car-item">
+        <img src="/images/vehicles/adventador.jpg" alt="Lamborghini Aventador">
+        <h3>Lamborghini Aventador</h3>
+        <p>A stunning performance car with unbeatable power and elegance.</p>
+    </div>
+    <div class="car-item">
+        <img src="/images/vehicles/aerocar.jpg" alt="Aerocar">
+        <h3>Aerocar</h3>
+        <p>The future of driving. Aerodynamic and efficient for modern-day needs.</p>
+    </div>
+    <div class="car-item">
+        <img src="/images/vehicles/batmobile.jpg" alt="Batmobile">
+        <h3>Batmobile</h3>
+        <p>The most iconic car in the superhero world, with tech like no other!</p>
+    </div>
+</section>
 
-        <section class="car-gallery">
-            <div class="car-item">
-                <img src="/images/vehicles/adventador.jpg" alt="Lamborghini Aventador">
-                <h3>Lamborghini Aventador</h3>
-                <p>A stunning performance car with unbeatable power and elegance.</p>
-            </div>
-            <div class="car-item">
-                <img src="/images/vehicles/aerocar.jpg" alt="Aerocar">
-                <h3>Aerocar</h3>
-                <p>The future of driving. Aerodynamic and efficient for modern-day needs.</p>
-            </div>
-            <div class="car-item">
-                <img src="/images/vehicles/batmobile.jpg" alt="Batmobile">
-                <h3>Batmobile</h3>
-                <p>The most iconic car in the superhero world, with tech like no other!</p>
-            </div>
-        </section>
-
-        <section class="cta">
-            <h2>Find Your Dream Car Today</h2>
-            <p>Visit us or contact us for more information on our models and pricing.</p>
-        </section>
-    </main>
-
-    <%- include("partials/footer") %>
-</body>
-</html>
+<section class="cta">
+    <h2>Find Your Dream Car Today</h2>
+    <p>Visit us or contact us for more information on our models and pricing.</p>
+</section>
