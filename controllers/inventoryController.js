@@ -1,28 +1,19 @@
 const invModel = require("../models/inventoryModel");
-const utilities = require("../utilities");
+const utilities = require("../utilities/");
 
-async function buildByInventoryId(req, res, next) {
+async function buildByClassificationId(req, res, next) {
+  const classificationId = req.params.classificationId;
   try {
-    const inv_id = parseInt(req.params.inv_id);
-    const data = await invModel.getInventoryById(inv_id);
-
-    if (!data) {
-      return next(); // If no item, pass to 404 handler
-    }
-
-    const html = utilities.buildDetailView(data);
+    const data = await invModel.getInventoryByClassificationId(classificationId);
+    const grid = utilities.buildClassificationGrid(data);
     const nav = await utilities.getNav();
-
-    res.render("inventory/detail", {
-      title: `${data.inv_make} ${data.inv_model}`,
+    const classificationName = data.length > 0 ? data[0].classification_name : "Vehicles";
+    res.render("inventory/classification", {
+      title: `${classificationName} vehicles`,
       nav,
-      content: html
+      grid,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 }
-
-module.exports = {
-  buildByInventoryId
-};

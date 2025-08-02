@@ -11,8 +11,20 @@ const app = express();
 // Load utilities
 const utilities = require("./utilities");
 
+app.use(async (req, res, next) => {
+  try {
+    res.locals.nav = await utilities.getNav();
+    next();
+  } catch (err) {
+    res.locals.nav = "<ul><li>Error loading navigation</li></ul>";
+    next();
+  }
+});
+
+
 // Load routes
 const inventoryRoute = require("./routes/inventoryRoute");
+app.use("/inventory", inventoryRoute);
 
 /* ***********************
  * View Engine & Layout
