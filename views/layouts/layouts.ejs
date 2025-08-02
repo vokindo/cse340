@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/navigation', { nav: nav }) %>
+
+  <main>
+    <%- body %> <!-- this is where the child view (like index.ejs) gets injected -->
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>
