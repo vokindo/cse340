@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const app = express();
 
+
 // Load utilities
 const utilities = require("./utilities");
 
@@ -57,6 +58,9 @@ app.use(async (req, res, next) => {
   next();
 });
 
+const { getNav } = require("./utilities");
+
+
 /* ***********************
  * Routes
  *************************/
@@ -66,6 +70,13 @@ app.get("/", (req, res) => {
   res.render("index", { title: "Home" });
 });
 
+
+// Additional Routes
+
+const errorRoute = require("./routes/errorRoute");
+app.use("/", errorRoute);
+
+
 /* ***********************
  * Server Listener
  *************************/
@@ -74,4 +85,23 @@ const host = process.env.HOST || "localhost";
 
 app.listen(port, () => {
   console.log(`App listening on ${host}:${port}`);
+});
+
+
+app.use((req, res, next) => {
+  const err = new Error("Page Not Found");
+  err.status = 404;
+  next(err);
+});
+
+
+app.use(async (err, req, res, next) => {
+  let status = err.status || 500;
+  const nav = await getNav(); // import this if not already
+
+  res.status(status).render("errors/error", {
+    title: `${status} Error`,
+    message: err.message,
+    nav,
+  });
 });
