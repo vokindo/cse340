@@ -10,49 +10,43 @@ const express = require("express");
 const path = require("path");
 const env = require("dotenv").config();
 const app = express();
+const expressLayouts = require("express-ejs-layouts");
 const inventoryRoute = require("./routes/inventoryRoute");
-app.use("/inventory", inventoryRoute);
+const utilities = require("./utilities");
 
-
-/* ***********************
- * Set View Engine and Static Files
- *************************/
+/* Set View Engine */
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Set views directory
+app.set("views", path.join(__dirname, "views"));
 
-/* ***********************
- * Static File Configuration
- *************************/
-// Static file routes (CSS, JS, images)
-app.use(express.static("public")); // Serve static files from the public directory
+/* Layout Support */
+app.use(expressLayouts);
+app.set("layout", "./layouts/layout");
+
+/* Static Files */
+app.use(express.static("public"));
 app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/js", express.static(path.join(__dirname, "public", "js")));
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
-/* ***********************
- * Routes
- *************************/
-// Index route
-app.get("/", function (req, res) {
-  res.render("index", { title: "Home" });
+/* Routes */
+app.use("/inventory", inventoryRoute);
+
+// Home Page Route with nav
+app.get("/", async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav();
+    res.render("index", {
+      title: "Home",
+      nav,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
+/* Server Startup */
 const port = process.env.PORT || 5500;
 const host = process.env.HOST || "localhost";
-
-/* ***********************
- * Log statement to confirm server operation
- *************************/
 app.listen(port, () => {
   console.log(`App listening on ${host}:${port}`);
 });
-
-
-
-const expressLayouts = require('express-ejs-layouts');
-app.use(expressLayouts); // Use express-ejs-layouts
-app.set("layout", "./layouts/layout"); // Set the layout file path

@@ -18,4 +18,23 @@ function buildVehicleDetail(vehicle) {
 
 module.exports = {
   buildVehicleDetail,
+  getNav
 };
+
+
+const pool = require("../database");
+
+async function getNav() {
+  try {
+    const data = await pool.query("SELECT * FROM classification ORDER BY classification_name");
+    let nav = "<ul>";
+    nav += '<li><a href="/" title="Home page">Home</a></li>';
+    data.rows.forEach(row => {
+      nav += `<li><a href="/inventory/type/${row.classification_id}" title="See our ${row.classification_name} vehicles">${row.classification_name}</a></li>`;
+    });
+    nav += "</ul>";
+    return nav;
+  } catch (error) {
+    throw error;
+  }
+}
