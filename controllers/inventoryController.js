@@ -17,3 +17,26 @@ async function buildByClassificationId(req, res, next) {
     next(error);
   }
 }
+
+async function buildByInventoryId(req, res, next) {
+  const invId = req.params.invId;
+  try {
+    const data = await invModel.getInventoryById(invId);
+    const nav = await utilities.getNav();
+    const details = utilities.buildVehicleDetail(data[0]);
+
+    res.render("inventory/detail", {
+      title: `${data[0].inv_make} ${data[0].inv_model}`,
+      nav,
+      details,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
+  buildByClassificationId,
+  buildByInventoryId,
+};
+
