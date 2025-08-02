@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <% include partials/head %> <!-- Correct include syntax -->
+    <%- include("partials/head") %>
 </head>
 
 <body>
-    <% include partials/navigation %> <!-- Correct include syntax -->
+    <%- include("partials/navigation", { nav: nav }) %>
 
     <main>
         <section class="intro">
@@ -38,7 +38,7 @@
         </section>
     </main>
 
-    <% include partials/footer %> <!-- Correct include syntax -->
+    <%- include("partials/footer") %>
 </body>
 
 </html>
