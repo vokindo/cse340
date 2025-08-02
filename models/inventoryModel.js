@@ -11,3 +11,21 @@ async function getInventoryByClassificationId(classification_id) {
     throw error;
   }
 }
+
+async function getInventoryById(inv_id) {
+  try {
+    const data = await pool.query(
+      "SELECT * FROM inventory WHERE inv_id = $1",
+      [inv_id]
+    );
+    return data.rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+module.exports = {
+  getInventoryByClassificationId,
+  getInventoryById, // <- add this
+};

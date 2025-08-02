@@ -23,7 +23,7 @@ async function buildByInventoryId(req, res, next) {
   try {
     const data = await invModel.getInventoryById(invId);
     const nav = await utilities.getNav();
-    const details = utilities.buildVehicleDetail(data[0]);
+    const content = utilities.buildVehicleDetail(data[0]);
 
     res.render("inventory/detail", {
       title: `${data[0].inv_make} ${data[0].inv_model}`,

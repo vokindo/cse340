@@ -1,4 +1,11 @@
-<h1><%= title %></h1>
-<div class="detail-wrapper">
-  <%- content %>
-</div>
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1><%= title %></h1>
+  <div class="detail-wrapper">
+    <%- content %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
